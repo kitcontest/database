@@ -1,5 +1,5 @@
 -- 1. 사용자 관리: Users 테이블
-CREATE TABLE Users (
+CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,  -- 해시값 권장
@@ -9,7 +9,7 @@ CREATE TABLE Users (
 );
 
 -- 2. 공모전 관리: Contests 테이블 (제공된 구조 활용)
-CREATE TABLE Contests (
+CREATE TABLE contests (
     contest_id INT AUTO_INCREMENT PRIMARY KEY,
     keywords VARCHAR(255),
     title VARCHAR(255),
@@ -22,7 +22,7 @@ CREATE TABLE Contests (
 );
 
 -- 3. 모임 관리: Meetings 테이블
-CREATE TABLE Meetings (
+CREATE TABLE meetings (
     meeting_id INT AUTO_INCREMENT PRIMARY KEY,
     contest_id INT NOT NULL,               -- 관련 공모전 (Contests와 연관)
     description TEXT,                      -- 모임 상세 설명
@@ -31,13 +31,14 @@ CREATE TABLE Meetings (
     creator_id INT NOT NULL,               -- 모임 생성자 (Users와 연관)
     approval_status VARCHAR(20) DEFAULT 'pending',  -- 예: 'pending', 'approved', 'rejected'
     share_link VARCHAR(255),               -- 공유 링크 (카카오톡, 슬랙 등)
+    current_participants INT DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (contest_id) REFERENCES Contests(contest_id),
     FOREIGN KEY (creator_id) REFERENCES Users(user_id)
 );
 
 -- 4. 모임 참여 및 평가: MeetingParticipants 테이블
-CREATE TABLE MeetingParticipants (
+CREATE TABLE meeting_participants (
     meeting_id INT NOT NULL,
     user_id INT NOT NULL,
     status VARCHAR(20) DEFAULT 'pending',  -- 예: 'pending', 'approved', 'rejected'
@@ -51,7 +52,7 @@ CREATE TABLE MeetingParticipants (
 -- 5. 활동 이력 관리: ActivityHistory 테이블
 --    activity_type: 'login', 'contest_activity' 등으로 구분
 --    로그인 이력에 IP주소, 로그인일시와 로그아웃일시를 기록할 수 있도록 logout_time 컬럼 추가
-CREATE TABLE ActivityHistory (
+CREATE TABLE activity_history (
     history_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     activity_type VARCHAR(50) NOT NULL,    -- 예: 'login', 'contest_activity'
