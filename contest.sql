@@ -29,7 +29,7 @@ CREATE TABLE meetings (
     subject VARCHAR(255),                  -- 모임 주제
     capacity INT,                          -- 인원 제한
     creator_id INT NOT NULL,               -- 모임 생성자 (Users와 연관)
-    approval_status VARCHAR(20) DEFAULT 'pending',  -- 예: 'pending', 'approved', 'rejected'
+    approval_status VARCHAR(20) DEFAULT 'pending', -- full or pending
     share_link VARCHAR(255),               -- 공유 링크 (카카오톡, 슬랙 등)
     current_participants INT DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -56,7 +56,6 @@ CREATE TABLE activity_history (
     history_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     activity_type VARCHAR(50) NOT NULL,    -- 예: 'login', 'contest_activity'
-    reference_id INT,                        -- 공모전 ID 또는 모임 ID 등 관련된 참조값
     activity_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     logout_time TIMESTAMP NULL,              -- 로그아웃일시 (로그아웃 시 업데이트)
     details TEXT,                          -- 추가 설명 (예: 로그인 성공 여부 등)
